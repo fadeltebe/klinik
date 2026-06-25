@@ -787,17 +787,17 @@ klinik/
 
 ### Phase 1 — Core Engine (CURRENT SCOPE) 🎯
 
-| # | Modul | Prioritas | Estimasi |
-|---|-------|-----------|----------|
-| 1 | Setup project, database migrations, seeders | P0 | 1 hari |
-| 2 | Autentikasi (Login/Register/Logout) + Middleware | P0 | 1 hari |
-| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari |
-| 4 | Patient: Booking wizard | P0 | 1-2 hari |
-| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari |
-| 6 | Admin: Doctor schedule config | P0 | 0.5 hari |
-| 7 | TV Queue Display | P0 | 1 hari |
-| 8 | Doctor: Basic dashboard | P1 | 0.5 hari |
-| 9 | Polish UI, testing, bug fixes | P0 | 1-2 hari |
+| # | Modul | Prioritas | Estimasi | Status |
+|---|-------|-----------|----------|--------|
+| 1 | Setup project, database migrations, seeders | P0 | 1 hari | ✅ Selesai |
+| 2 | Autentikasi (Login/Register/Logout) + Middleware | P0 | 1 hari | ✅ Selesai |
+| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ⬜ Belum |
+| 4 | Patient: Booking wizard | P0 | 1-2 hari | ⬜ Belum |
+| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ⬜ Belum |
+| 6 | Admin: Doctor schedule config | P0 | 0.5 hari | ⬜ Belum |
+| 7 | TV Queue Display | P0 | 1 hari | ⬜ Belum |
+| 8 | Doctor: Basic dashboard | P1 | 0.5 hari | ⬜ Belum |
+| 9 | Polish UI, testing, bug fixes | P0 | 1-2 hari | ⬜ Belum |
 
 **Estimasi Total Phase 1: 7-10 hari kerja**
 
