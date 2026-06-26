@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('polyclinic_id')->nullable()->constrained('polyclinics')->onDelete('set null');
             $table->string('name');
             $table->string('specialization');
-            $table->string('poli_name');
             $table->string('license_number');
             $table->string('photo')->nullable();
             $table->boolean('is_active')->default(true);

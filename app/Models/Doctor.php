@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['user_id', 'name', 'specialization', 'poli_name', 'license_number', 'photo', 'is_active'])]
+#[Fillable(['user_id', 'polyclinic_id', 'name', 'specialization', 'license_number', 'photo', 'is_active'])]
 class Doctor extends Model
 {
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function polyclinic()
+    {
+        return $this->belongsTo(Polyclinic::class);
     }
 
     public function doctorAdmins()

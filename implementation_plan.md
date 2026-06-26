@@ -789,14 +789,14 @@ klinik/
 
 | # | Modul | Prioritas | Estimasi | Status |
 |---|-------|-----------|----------|--------|
-| 1 | Setup project, database migrations, seeders | P0 | 1 hari | ✅ Selesai |
-| 2 | Autentikasi (Login/Register/Logout) + Middleware | P0 | 1 hari | ✅ Selesai |
-| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ⬜ Belum |
-| 4 | Patient: Booking wizard | P0 | 1-2 hari | ⬜ Belum |
-| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ⬜ Belum |
+| 1 | Setup project, database migrations, seeders (Poli, Rekam Medis, Obat) | P0 | 1 hari | ✅ Selesai |
+| 2 | Autentikasi (Login/Logout) + Middleware + Base Dashboards | P0 | 1 hari | ✅ Selesai |
+| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ✅ Selesai |
+| 4 | Patient: Booking wizard | P0 | 1-2 hari | ✅ Selesai |
+| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ✅ Selesai |
 | 6 | Admin: Doctor schedule config | P0 | 0.5 hari | ⬜ Belum |
 | 7 | TV Queue Display | P0 | 1 hari | ⬜ Belum |
-| 8 | Doctor: Basic dashboard | P1 | 0.5 hari | ⬜ Belum |
+| 8 | Doctor & Apotek: Basic dashboard | P1 | 0.5 hari | ✅ Selesai |
 | 9 | Polish UI, testing, bug fixes | P0 | 1-2 hari | ⬜ Belum |
 
 **Estimasi Total Phase 1: 7-10 hari kerja**

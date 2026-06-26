@@ -20,9 +20,9 @@ class DoctorSeeder extends Seeder
         Doctor::create([
             'id' => 1,
             'user_id' => $docUser1->id,
+            'polyclinic_id' => 1, // Anak
             'name' => 'dr. Andi Pratama, Sp.A',
             'specialization' => 'Pediatrics',
-            'poli_name' => 'Anak',
             'license_number' => 'STR-1234567890',
         ]);
 
@@ -35,9 +35,9 @@ class DoctorSeeder extends Seeder
         Doctor::create([
             'id' => 2,
             'user_id' => $docUser2->id,
+            'polyclinic_id' => 2, // Kandungan
             'name' => 'dr. Sari Dewi, Sp.OG',
             'specialization' => 'Obgyn',
-            'poli_name' => 'Kandungan',
             'license_number' => 'STR-2234567890',
         ]);
 
@@ -50,9 +50,9 @@ class DoctorSeeder extends Seeder
         Doctor::create([
             'id' => 3,
             'user_id' => $docUser3->id,
+            'polyclinic_id' => 3, // THT
             'name' => 'dr. Budi Santoso, Sp.THT',
             'specialization' => 'ENT',
-            'poli_name' => 'THT',
             'license_number' => 'STR-3234567890',
         ]);
     }

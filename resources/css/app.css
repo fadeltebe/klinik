@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #F8F7F3;
-  --color-primary: #96E6C2;
-  --color-primary-dark: #7bc5a4;
+  --color-canvas: #F5F3EE;
+  --color-mint: #96e6c2;
+  --color-mint-dark: #5ab88a;
+  --color-primary: #96e6c2;
+  --color-primary-dark: #5ab88a;
   --color-urgency: #EA580C;
-  --color-success: #FFAA29;
+  --color-success: #ffaa29;
   --color-text-primary: #1F2937;
   --color-text-secondary: #6B7280;
   --color-danger: #DC2626;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -21,5 +23,34 @@
     background-color: var(--color-canvas);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
+  }
+}
+
+@layer components {
+  .glass { 
+    background: rgba(255,255,255,0.7); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); 
+  }
+  .nav-link.active { 
+    background: linear-gradient(135deg, rgba(150,230,194,0.2), rgba(90,184,138,0.1)); 
+    color: var(--color-mint-dark); 
+  }
+  .queue-card { 
+    transition: all 0.3s ease; 
+  }
+  .queue-card:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06); 
+  }
+}
+
+@layer utilities {
+  @keyframes fadeIn { 
+    from { opacity:0; transform:translateY(8px); } 
+    to { opacity:1; transform:translateY(0); } 
+  }
+  .animate-in { 
+    animation: fadeIn 0.4s ease forwards; 
   }
 }

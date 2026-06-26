@@ -22,4 +22,9 @@ class Appointment extends Model
     {
         return $this->belongsTo(User::class, 'booked_by_admin_id');
     }
+
+    public function medicalRecord()
+    {
+        return $this->hasOne(MedicalRecord::class);
+    }
 }
