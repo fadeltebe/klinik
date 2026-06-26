@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,9 @@
     @livewireStyles
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
+
 <body class="bg-canvas text-text-primary antialiased min-h-screen font-sans">
     <!-- Desktop Sidebar -->
     <aside class="canva-sidebar hidden lg:flex fixed left-0 top-0 bottom-0 w-64 flex-col p-6 z-40 border-r border-gray-100/50 bg-white/50 backdrop-blur-xl">
@@ -16,7 +19,7 @@
             <h1 class="text-2xl font-bold text-mint-dark tracking-tight">KlinikQ</h1>
             <span class="text-xs font-semibold text-urgency bg-orange-50 px-2 py-0.5 rounded-full mt-1 inline-block">ADMIN PANEL</span>
         </div>
-        
+
         <nav class="flex-1 space-y-1 overflow-y-auto">
             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : 'text-gray-500 hover:bg-gray-50' }} flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all">
                 <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
@@ -58,7 +61,7 @@
                     <i data-lucide="log-out" class="w-5 h-5"></i>
                 </button>
                 <form id="logout-form-mobile" method="POST" action="{{ route('logout') }}" class="hidden">@csrf</form>
-                
+
                 <button class="w-10 h-10 rounded-full glass flex items-center justify-center border border-white/50 shadow-sm">
                     <i data-lucide="bell" class="w-5 h-5 text-urgency"></i>
                 </button>
@@ -89,6 +92,15 @@
         document.addEventListener('livewire:navigated', () => {
             lucide.createIcons();
         });
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('commit', ({ succeed }) => {
+                succeed(() => {
+                    setTimeout(() => lucide.createIcons(), 10);
+                });
+            });
+        });
     </script>
+    @stack('scripts')
 </body>
+
 </html>

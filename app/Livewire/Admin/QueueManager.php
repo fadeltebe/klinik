@@ -89,6 +89,30 @@ class QueueManager extends Component
         }
     }
 
+    // Reorder Queue
+    public function updateQueueOrder($orderedIds)
+    {
+        // $orderedIds is an array of appointment IDs in their new order
+        $today = Carbon::today();
+        
+        // Ensure all IDs belong to the current selected doctor and are active for today
+        $appointments = Appointment::where('doctor_id', $this->selectedDoctorId)
+            ->whereDate('appointment_date', $today)
+            ->whereIn('id', $orderedIds)
+            ->get()
+            ->keyBy('id');
+
+        $counter = 1;
+        foreach ($orderedIds as $id) {
+            if (isset($appointments[$id])) {
+                $appointments[$id]->update(['queue_number' => $counter]);
+                $counter++;
+            }
+        }
+
+        session()->flash('success', "Urutan antrean berhasil diperbarui.");
+    }
+
     public function render()
     {
         $today = Carbon::today();
