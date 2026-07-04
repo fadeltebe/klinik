@@ -45,6 +45,7 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('super-admin')->name('su
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
     Route::get('/queue', \App\Livewire\Admin\QueueManager::class)->name('queue.index');
+    Route::get('/patients', \App\Livewire\Admin\PatientDatabase::class)->name('patients.index');
     Route::get('/doctors', \App\Livewire\Admin\DoctorList::class)->name('doctors.index');
     Route::get('/doctors/{doctor}/schedule', \App\Livewire\Admin\ScheduleManager::class)->name('doctors.schedule');
 });

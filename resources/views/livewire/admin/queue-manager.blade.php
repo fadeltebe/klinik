@@ -137,37 +137,39 @@
         $label = $statusLabels[$appt->status] ?? ucfirst($appt->status);
         @endphp
 
-        <div data-id="{{ $appt->id }}" class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between {{ $appt->status === 'calling' ? 'ring-2 ring-purple-300' : '' }}">
-            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-5">
-                <i data-lucide="grip-vertical" class="w-5 h-5 text-gray-300 cursor-grab hover:text-gray-500 drag-handle flex-shrink-0"></i>
-                <div class="text-center sm:text-left w-full sm:w-14">
-                    <span class="block text-[10px] text-gray-400 font-bold uppercase">Antrean</span>
-                    <span class="block text-3xl font-bold text-mint-dark">{{ $appt->queue_number }}</span>
-                </div>
-                <div class="hidden sm:block h-10 w-px bg-gray-200"></div>
-                <div class="min-w-0">
-                    <h3 class="font-bold text-gray-800 truncate">{{ $appt->patientProfile->full_name }}</h3>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1.5">
-                        <span class="{{ $colorClass }} text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">{{ $label }}</span>
-                    </div>
+        <div data-id="{{ $appt->id }}" class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 grid grid-cols-[auto_1fr_auto] gap-3 items-center {{ $appt->status === 'calling' ? 'ring-2 ring-purple-300' : '' }}">
+            <!-- Left: Queue Number with Drag Handle -->
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-300 cursor-grab hover:text-gray-500 drag-handle"></i>
+                <div class="text-center">
+                    <span class="block text-[9px] text-gray-400 font-bold uppercase">Antrean</span>
+                    <span class="block text-2xl sm:text-3xl font-bold text-mint-dark">{{ $appt->queue_number }}</span>
                 </div>
             </div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:items-center w-full sm:w-auto">
+
+            <!-- Middle: Patient Name (top) and Status (bottom) -->
+            <div class="min-w-0">
+                <h3 class="font-bold text-gray-800 truncate text-sm sm:text-base">{{ $appt->patientProfile->full_name }}</h3>
+                <span class="{{ $colorClass }} text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide whitespace-nowrap inline-block mt-1">{{ $label }}</span>
+            </div>
+
+            <!-- Right: Action Button -->
+            <div class="flex-shrink-0">
                 @if($appt->status === 'approved')
-                <button wire:click="updateStatus({{ $appt->id }}, 'checked_in')" class="w-full sm:w-auto px-4 py-2 border border-blue-200 text-blue-600 hover:bg-blue-50 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="user-check" class="w-4 h-4"></i> Pasien Hadir
+                <button wire:click="updateStatus({{ $appt->id }}, 'checked_in')" class="px-3 sm:px-4 py-2 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap">
+                    <i data-lucide="user-check" class="w-4 h-4"></i> <span class="hidden sm:inline">Hadir</span><span class="sm:hidden">Hadir</span>
                 </button>
                 @elseif($appt->status === 'checked_in')
-                <button wire:click="updateStatus({{ $appt->id }}, 'calling')" class="w-full sm:w-auto px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="mic" class="w-4 h-4"></i> Panggil
+                <button wire:click="updateStatus({{ $appt->id }}, 'calling')" class="px-3 sm:px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap">
+                    <i data-lucide="mic" class="w-4 h-4"></i> <span class="hidden sm:inline">Panggil</span><span class="sm:hidden">Panggil</span>
                 </button>
                 @elseif($appt->status === 'calling')
-                <button wire:click="updateStatus({{ $appt->id }}, 'processing')" class="w-full sm:w-auto px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="door-open" class="w-4 h-4"></i> Masuk Ruangan
+                <button wire:click="updateStatus({{ $appt->id }}, 'processing')" class="px-3 sm:px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap">
+                    <i data-lucide="door-open" class="w-4 h-4"></i> <span class="hidden sm:inline">Masuk</span><span class="sm:hidden">Masuk</span>
                 </button>
                 @elseif($appt->status === 'processing')
-                <button wire:click="updateStatus({{ $appt->id }}, 'completed')" class="w-full sm:w-auto px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm" title="Biasanya dilakukan oleh Dokter">
-                    <i data-lucide="check-check" class="w-4 h-4"></i> Selesai
+                <button wire:click="updateStatus({{ $appt->id }}, 'completed')" class="px-3 sm:px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-[11px] sm:text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap" title="Biasanya dilakukan oleh Dokter">
+                    <i data-lucide="check-check" class="w-4 h-4"></i> <span class="hidden sm:inline">Selesai</span><span class="sm:hidden">Selesai</span>
                 </button>
                 @endif
             </div>

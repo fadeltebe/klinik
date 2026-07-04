@@ -29,6 +29,10 @@
                 <i data-lucide="users" class="w-5 h-5"></i>
                 <span>Kelola Antrean</span>
             </a>
+            <a href="{{ route('admin.patients.index') }}" class="nav-link {{ request()->routeIs('admin.patients.*') ? 'active' : 'text-gray-500 hover:bg-gray-50' }} flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all mt-1">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Database Pasien</span>
+            </a>
             <a href="{{ route('admin.doctors.index') }}" class="nav-link {{ request()->routeIs('admin.doctors.*') ? 'active' : 'text-gray-500 hover:bg-gray-50' }} flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all mt-1">
                 <i data-lucide="calendar-clock" class="w-5 h-5"></i>
                 <span>Jadwal Dokter</span>
@@ -92,6 +96,10 @@
             <a href="{{ route('admin.queue.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.queue.*') ? 'text-mint-dark' : 'text-gray-400' }}">
                 <i data-lucide="users" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium">Antrean</span>
+            </a>
+            <a href="{{ route('admin.patients.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.patients.*') ? 'text-mint-dark' : 'text-gray-400' }}">
+                <i data-lucide="users" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium">Pasien</span>
             </a>
             <a href="{{ route('admin.doctors.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.doctors.*') ? 'text-mint-dark' : 'text-gray-400' }}">
                 <i data-lucide="calendar-clock" class="w-6 h-6"></i>
