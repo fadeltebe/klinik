@@ -36,29 +36,33 @@
     @endif
 
     <!-- Tabs -->
-    <div class="overflow-x-auto scroll-smooth -mx-4 sm:mx-0 px-4 sm:px-0">
-        <div class="inline-flex gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-            <button wire:click="setTab('pending')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+    <div class="w-full overflow-x-auto scroll-smooth -mx-4 sm:mx-0 px-4 sm:px-0">
+        <div class="flex w-full gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
+
+            <button wire:click="setTab('pending')" class="flex-1 justify-center whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i data-lucide="clock" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
                 <span class="hidden sm:inline">Menunggu</span><span class="sm:hidden">Tunggu</span>
                 @if(count($pendingAppointments) > 0)
                 <span class="{{ $activeTab === 'pending' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($pendingAppointments) }}</span>
                 @endif
             </button>
-            <button wire:click="setTab('active')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+
+            <button wire:click="setTab('active')" class="flex-1 justify-center whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i data-lucide="users" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
                 <span class="hidden sm:inline">Aktif</span><span class="sm:hidden">Aktif</span>
                 @if(count($activeAppointments) > 0)
                 <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
                 @endif
             </button>
-            <button wire:click="setTab('completed')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+
+            <button wire:click="setTab('completed')" class="flex-1 justify-center whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i data-lucide="check-square" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
                 <span class="hidden sm:inline">Selesai</span><span class="sm:hidden">Selesai</span>
                 @if(count($completedAppointments) > 0)
                 <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
                 @endif
             </button>
+
         </div>
     </div>
 
