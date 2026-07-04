@@ -35,7 +35,7 @@
     </div>
 
     @if (session()->has('success'))
-    <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-start gap-3 shadow-sm">
+    <div class="fixed top-4 right-4 max-w-sm z-50 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-start gap-3 shadow-lg animate-in fade-in slide-in-from-top-4 duration-300">
         <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
         <span class="text-sm font-medium">{{ session('success') }}</span>
     </div>
