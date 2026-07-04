@@ -15,7 +15,7 @@ class BookAppointment extends Component
 {
     public $activeProfileId;
     public $step = 1;
-    
+
     public $appointmentDate;
     public $polyclinicId;
     public $doctorId;
@@ -32,13 +32,26 @@ class BookAppointment extends Component
         }
 
         // Generate next 7 days for booking
-        $this->availableDates = collect(range(0, 7))->map(function($days) {
+        $this->availableDates = collect(range(0, 7))->map(function ($days) {
             $date = Carbon::now()->addDays($days);
             // Skip Sunday
             if ($date->isSunday()) return null;
+
+            // Set locale to Indonesian
+            $dayName = $date->locale('id')->isoFormat('dddd');
+            $dateFormatted = $date->locale('id')->isoFormat('D MMMM Y');
+
+            if ($date->isToday()) {
+                $label = 'Hari Ini, ' . $dateFormatted;
+            } elseif ($date->isTomorrow()) {
+                $label = 'Besok, ' . $dateFormatted;
+            } else {
+                $label = $dayName . ', ' . $dateFormatted;
+            }
+
             return [
                 'value' => $date->format('Y-m-d'),
-                'label' => $date->isToday() ? 'Hari Ini' : ($date->isTomorrow() ? 'Besok' : $date->isoFormat('dddd, D MMM')),
+                'label' => $label,
             ];
         })->filter()->values()->toArray();
 
@@ -101,7 +114,7 @@ class BookAppointment extends Component
             $lastQueue = Appointment::where('doctor_id', $this->doctorId)
                 ->whereDate('appointment_date', $this->appointmentDate)
                 ->max('queue_number');
-                
+
             $newQueue = $lastQueue ? $lastQueue + 1 : 1;
 
             Appointment::create([
@@ -113,7 +126,7 @@ class BookAppointment extends Component
             ]);
 
             DB::commit();
-            
+
             session()->flash('success', 'Janji temu berhasil dibuat! Silakan tunggu konfirmasi.');
             return redirect()->route('patient.dashboard');
         } catch (\Exception $e) {
