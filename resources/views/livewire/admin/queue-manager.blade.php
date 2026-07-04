@@ -1,37 +1,31 @@
-<div wire:poll.10s="refreshQueue" class="space-y-6">
-    <div class="mb-6 space-y-4">
-        <div>
-            <h1 class="text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
-            <p class="text-sm text-gray-500">Kelola persetujuan dan alur antrean pasien</p>
+<div wire:poll.10s="refreshQueue" class="space-y-3">
+    <!-- Header Section -->
+    <div class="mb-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
+                <p class="text-xs sm:text-sm text-gray-500">Kelola persetujuan dan alur antrean pasien</p>
+            </div>
+            <!-- Date Filter (compact on mobile) -->
+            <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm w-full sm:w-auto">
+                <i data-lucide="calendar" class="w-4 h-4 text-mint flex-shrink-0"></i>
+                <label for="filterDate" class="sr-only">Tanggal</label>
+                <input type="date" wire:model.live="filterDate" id="filterDate" class="flex-1 sm:flex-none border border-transparent bg-transparent text-xs sm:text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0 w-full">
+            </div>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
-            <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
-                <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-mint/10 text-mint">
-                    <i data-lucide="calendar" class="w-5 h-5"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <label for="filterDate" class="sr-only">Tanggal</label>
-                    <input type="date" wire:model.live="filterDate" id="filterDate" class="w-full rounded-2xl border border-transparent bg-transparent text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0">
-                </div>
-            </div>
-
-            @if($isGlobalAdmin)
-            <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
-                <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-mint/10 text-mint">
-                    <i data-lucide="user-check" class="w-5 h-5"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <label for="doctorSelect" class="sr-only">Dokter</label>
-                    <select wire:model.live="selectedDoctorId" id="doctorSelect" class="w-full rounded-2xl border border-transparent bg-transparent text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0">
-                        @foreach($doctors as $doc)
-                        <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            @endif
+        <!-- Doctor Selection (full width on mobile, 2-col on desktop) -->
+        @if($isGlobalAdmin)
+        <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+            <i data-lucide="user-check" class="w-4 h-4 text-mint flex-shrink-0"></i>
+            <label for="doctorSelect" class="sr-only">Dokter</label>
+            <select wire:model.live="selectedDoctorId" id="doctorSelect" class="flex-1 border border-transparent bg-transparent text-xs sm:text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0">
+                @foreach($doctors as $doc)
+                <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
+                @endforeach
+            </select>
         </div>
+        @endif
     </div>
 
     @if (session()->has('success'))
@@ -42,27 +36,27 @@
     @endif
 
     <!-- Tabs -->
-    <div class="mb-6 overflow-x-auto scroll-smooth">
+    <div class="overflow-x-auto scroll-smooth">
         <div class="inline-flex gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-            <button wire:click="setTab('pending')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-                <i data-lucide="clock" class="w-4 h-4"></i>
-                Menunggu
+            <button wire:click="setTab('pending')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="clock" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span class="hidden sm:inline">Menunggu</span><span class="sm:hidden">Tunggu</span>
                 @if(count($pendingAppointments) > 0)
-                <span class="{{ $activeTab === 'pending' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($pendingAppointments) }}</span>
+                <span class="{{ $activeTab === 'pending' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($pendingAppointments) }}</span>
                 @endif
             </button>
-            <button wire:click="setTab('active')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-                <i data-lucide="users" class="w-4 h-4"></i>
-                Aktif
+            <button wire:click="setTab('active')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="users" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span class="hidden sm:inline">Aktif</span><span class="sm:hidden">Aktif</span>
                 @if(count($activeAppointments) > 0)
-                <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
+                <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
                 @endif
             </button>
-            <button wire:click="setTab('completed')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-                <i data-lucide="check-square" class="w-4 h-4"></i>
-                Selesai
+            <button wire:click="setTab('completed')" class="whitespace-nowrap rounded-2xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="check-square" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                <span class="hidden sm:inline">Selesai</span><span class="sm:hidden">Selesai</span>
                 @if(count($completedAppointments) > 0)
-                <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
+                <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[9px] px-1.5 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
                 @endif
             </button>
         </div>
@@ -189,25 +183,28 @@
     @if($activeTab === 'completed')
     <div class="space-y-4">
         @forelse($completedAppointments as $appt)
-        <div class="canva-card bg-white/60 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-5 opacity-75 min-w-0">
-                <div class="text-center sm:text-left w-full sm:w-14">
-                    <span class="block text-[10px] text-gray-400 font-bold uppercase">Antrean</span>
-                    <span class="block text-3xl font-bold text-gray-400">{{ $appt->queue_number }}</span>
-                </div>
-                <div class="hidden sm:block h-10 w-px bg-gray-200"></div>
-                <div class="min-w-0">
-                    <h3 class="font-bold text-gray-600 truncate">{{ $appt->patientProfile->full_name }}</h3>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1.5">
-                        @if($appt->status === 'completed')
-                        <span class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Selesai Diperiksa</span>
-                        @elseif($appt->status === 'cancelled')
-                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Dibatalkan</span>
-                        @endif
-                        <span class="text-xs text-gray-400">Jam: {{ $appt->updated_at->format('H:i') }}</span>
-                    </div>
+        <div class="canva-card bg-white/60 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 grid grid-cols-[auto_1fr_auto] gap-3 items-center opacity-75">
+            <!-- Left: Queue Number -->
+            <div class="text-center flex-shrink-0">
+                <span class="block text-[9px] text-gray-400 font-bold uppercase">Antrean</span>
+                <span class="block text-2xl sm:text-3xl font-bold text-gray-400">{{ $appt->queue_number }}</span>
+            </div>
+
+            <!-- Middle: Patient Name (top) and Status (bottom) -->
+            <div class="min-w-0">
+                <h3 class="font-bold text-gray-600 truncate text-sm sm:text-base">{{ $appt->patientProfile->full_name }}</h3>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-1 mt-1 text-[10px]">
+                    @if($appt->status === 'completed')
+                    <span class="bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded uppercase tracking-wide whitespace-nowrap inline-block">Selesai</span>
+                    @elseif($appt->status === 'cancelled')
+                    <span class="bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded uppercase tracking-wide whitespace-nowrap inline-block">Dibatalkan</span>
+                    @endif
+                    <span class="text-gray-400">Jam: {{ $appt->updated_at->format('H:i') }}</span>
                 </div>
             </div>
+
+            <!-- Right: Empty or can add action buttons later -->
+            <div class="flex-shrink-0"></div>
         </div>
         @empty
         <div class="text-center py-12 bg-white/50 backdrop-blur rounded-2xl border border-white/60 shadow-sm">

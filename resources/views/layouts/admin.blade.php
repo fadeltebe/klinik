@@ -94,7 +94,7 @@
                 <span class="text-[10px] font-medium">Dashboard</span>
             </a>
             <a href="{{ route('admin.queue.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.queue.*') ? 'text-mint-dark' : 'text-gray-400' }}">
-                <i data-lucide="users" class="w-6 h-6"></i>
+                <i data-lucide="list" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium">Antrean</span>
             </a>
             <a href="{{ route('admin.patients.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.patients.*') ? 'text-mint-dark' : 'text-gray-400' }}">
