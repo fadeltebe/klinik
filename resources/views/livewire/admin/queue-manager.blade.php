@@ -1,6 +1,6 @@
 <div wire:poll.10s="refreshQueue" class="space-y-3">
     <!-- Header Section -->
-    <div class="mb-3">
+    <div class="mb-3 -mx-4 sm:mx-0 px-4 sm:px-0">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
             <div>
                 <h1 class="text-xl sm:text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
