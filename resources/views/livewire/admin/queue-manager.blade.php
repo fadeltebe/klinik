@@ -2,19 +2,26 @@
     <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
-            <p class="text-sm text-gray-500">Kelola persetujuan dan alur antrean pasien hari ini</p>
+            <p class="text-sm text-gray-500">Kelola persetujuan dan alur antrean pasien</p>
         </div>
 
-        @if($isGlobalAdmin)
-        <div class="flex items-center gap-3">
-            <label for="doctorSelect" class="text-sm font-semibold text-gray-700">Pilih Dokter:</label>
-            <select wire:model.live="selectedDoctorId" id="doctorSelect" class="rounded-xl border-gray-200 bg-white shadow-sm focus:border-mint focus:ring focus:ring-mint focus:ring-opacity-50 text-sm">
-                @foreach($doctors as $doc)
-                <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
-                @endforeach
-            </select>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <label for="filterDate" class="text-sm font-semibold text-gray-700">Tanggal:</label>
+                <input type="date" wire:model.live="filterDate" id="filterDate" class="rounded-xl border-gray-200 bg-white shadow-sm focus:border-mint focus:ring focus:ring-mint focus:ring-opacity-50 text-sm">
+            </div>
+
+            @if($isGlobalAdmin)
+            <div class="flex items-center gap-3">
+                <label for="doctorSelect" class="text-sm font-semibold text-gray-700">Dokter:</label>
+                <select wire:model.live="selectedDoctorId" id="doctorSelect" class="rounded-xl border-gray-200 bg-white shadow-sm focus:border-mint focus:ring focus:ring-mint focus:ring-opacity-50 text-sm">
+                    @foreach($doctors as $doc)
+                    <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
         </div>
-        @endif
     </div>
 
     @if (session()->has('success'))
@@ -38,6 +45,13 @@
             Antrean Aktif
             @if(count($activeAppointments) > 0)
             <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
+            @endif
+        </button>
+        <button wire:click="setTab('completed')" class="px-5 py-2.5 rounded-t-xl text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <i data-lucide="check-square" class="w-4 h-4"></i>
+            Selesai
+            @if(count($completedAppointments) > 0)
+            <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
             @endif
         </button>
     </div>
@@ -79,7 +93,7 @@
             <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="check-circle" class="w-8 h-8"></i>
             </div>
-            <p class="text-gray-500 font-medium">Tidak ada permohonan antrean baru.</p>
+            <p class="text-gray-500 font-medium">Tidak ada permohonan antrean baru pada tanggal ini.</p>
         </div>
         @endforelse
     </div>
@@ -146,7 +160,42 @@
             <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="users" class="w-8 h-8"></i>
             </div>
-            <p class="text-gray-500 font-medium">Tidak ada antrean aktif saat ini.</p>
+            <p class="text-gray-500 font-medium">Tidak ada antrean aktif pada tanggal ini.</p>
+        </div>
+        @endforelse
+    </div>
+    @endif
+
+    <!-- Tab Content: Completed -->
+    @if($activeTab === 'completed')
+    <div class="space-y-4">
+        @forelse($completedAppointments as $appt)
+        <div class="canva-card bg-white/60 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center justify-between gap-4">
+            <div class="flex-1 flex items-center gap-5 opacity-75">
+                <div class="text-center w-14">
+                    <span class="block text-[10px] text-gray-400 font-bold uppercase">Antrean</span>
+                    <span class="block text-3xl font-bold text-gray-400">{{ $appt->queue_number }}</span>
+                </div>
+                <div class="h-10 w-px bg-gray-200"></div>
+                <div>
+                    <h3 class="font-bold text-gray-600">{{ $appt->patientProfile->full_name }}</h3>
+                    <div class="flex items-center gap-2 mt-1.5">
+                        @if($appt->status === 'completed')
+                            <span class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Selesai Diperiksa</span>
+                        @elseif($appt->status === 'cancelled')
+                            <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Dibatalkan</span>
+                        @endif
+                        <span class="text-xs text-gray-400">Jam: {{ $appt->updated_at->format('H:i') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="text-center py-12 bg-white/50 backdrop-blur rounded-2xl border border-white/60 shadow-sm">
+            <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="check-square" class="w-8 h-8"></i>
+            </div>
+            <p class="text-gray-500 font-medium">Tidak ada data pasien yang selesai pada tanggal ini.</p>
         </div>
         @endforelse
     </div>
@@ -154,35 +203,33 @@
     @endif
 </div>
 
-@push('scripts')
+@script
 <script>
-    document.addEventListener('livewire:init', () => {
-        function initSortable() {
-            let el = document.getElementById('sortable-queue');
-            if(el) {
-                // Destroy previous instance if exists
-                if(el.sortable) {
-                    el.sortable.destroy();
-                }
-                el.sortable = Sortable.create(el, {
-                    handle: '.drag-handle',
-                    animation: 150,
-                    ghostClass: 'opacity-50',
-                    onEnd: function (evt) {
-                        let order = Array.from(el.children).map(child => child.dataset.id);
-                        @this.updateQueueOrder(order);
-                    }
-                });
+    function initSortable() {
+        let el = document.getElementById('sortable-queue');
+        if(el) {
+            // Destroy previous instance if exists
+            if(el.sortable) {
+                el.sortable.destroy();
             }
-        }
-        
-        initSortable();
-
-        Livewire.hook('commit', ({ succeed }) => {
-            succeed(() => {
-                setTimeout(() => initSortable(), 50);
+            el.sortable = Sortable.create(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'opacity-50',
+                onEnd: function (evt) {
+                    let order = Array.from(el.children).map(child => child.dataset.id);
+                    $wire.updateQueueOrder(order);
+                }
             });
+        }
+    }
+    
+    initSortable();
+
+    Livewire.hook('commit', ({ succeed }) => {
+        succeed(() => {
+            setTimeout(() => initSortable(), 50);
         });
     });
 </script>
-@endpush
+@endscript

@@ -794,8 +794,8 @@ klinik/
 | 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ✅ Selesai |
 | 4 | Patient: Booking wizard | P0 | 1-2 hari | ✅ Selesai |
 | 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ✅ Selesai |
-| 6 | Admin: Doctor schedule config | P0 | 0.5 hari | ⬜ Belum |
-| 7 | TV Queue Display | P0 | 1 hari | ⬜ Belum |
+| 6 | Admin: Doctor schedule config | P0 | 0.5 hari | ✅ Selesai |
+| 7 | TV Queue Display | P0 | 1 hari | ✅ Selesai |
 | 8 | Doctor & Apotek: Basic dashboard | P1 | 0.5 hari | ✅ Selesai |
 | 9 | Polish UI, testing, bug fixes | P0 | 1-2 hari | ⬜ Belum |
 

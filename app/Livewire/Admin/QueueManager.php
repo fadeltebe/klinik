@@ -15,12 +15,14 @@ class QueueManager extends Component
     public $selectedDoctorId = null;
     public $doctors = [];
     public $isGlobalAdmin = false;
+    public $filterDate;
     
     // UI state
-    public $activeTab = 'pending'; // 'pending' or 'active'
+    public $activeTab = 'pending'; // 'pending', 'active', or 'completed'
 
     public function mount()
     {
+        $this->filterDate = Carbon::today()->format('Y-m-d');
         $user = Auth::user();
         $doctorAdmin = $user->doctorAdmins->first();
 
@@ -93,7 +95,11 @@ class QueueManager extends Component
     public function updateQueueOrder($orderedIds)
     {
         // $orderedIds is an array of appointment IDs in their new order
-        $today = Carbon::today();
+        try {
+            $today = Carbon::parse($this->filterDate)->startOfDay();
+        } catch (\Exception $e) {
+            $today = Carbon::today();
+        }
         
         // Ensure all IDs belong to the current selected doctor and are active for today
         $appointments = Appointment::where('doctor_id', $this->selectedDoctorId)
@@ -115,10 +121,15 @@ class QueueManager extends Component
 
     public function render()
     {
-        $today = Carbon::today();
+        try {
+            $today = Carbon::parse($this->filterDate)->startOfDay();
+        } catch (\Exception $e) {
+            $today = Carbon::today();
+        }
 
         $pendingAppointments = [];
         $activeAppointments = [];
+        $completedAppointments = [];
 
         if ($this->selectedDoctorId) {
             // Fetch Pending Approvals for Today
@@ -136,11 +147,20 @@ class QueueManager extends Component
                 ->whereIn('status', ['approved', 'checked_in', 'calling', 'processing'])
                 ->orderBy('queue_number', 'asc')
                 ->get();
+
+            // Fetch Completed/Cancelled for Today
+            $completedAppointments = Appointment::with('patientProfile')
+                ->where('doctor_id', $this->selectedDoctorId)
+                ->whereDate('appointment_date', $today)
+                ->whereIn('status', ['completed', 'cancelled'])
+                ->orderBy('updated_at', 'desc')
+                ->get();
         }
 
         return view('livewire.admin.queue-manager', [
             'pendingAppointments' => $pendingAppointments,
             'activeAppointments' => $activeAppointments,
+            'completedAppointments' => $completedAppointments,
         ]);
     }
 }

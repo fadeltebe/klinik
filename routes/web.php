@@ -24,6 +24,9 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
+// Public TV Display Route
+Route::get('/tv-display', \App\Livewire\TvDisplay\QueueDisplay::class)->name('tv-display');
+
 // Patient Routes
 Route::middleware(['auth', 'role:patient'])->prefix('patient')->name('patient.')->group(function () {
     Route::get('/dashboard', \App\Livewire\Patient\Dashboard::class)->name('dashboard');
@@ -42,6 +45,8 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('super-admin')->name('su
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
     Route::get('/queue', \App\Livewire\Admin\QueueManager::class)->name('queue.index');
+    Route::get('/doctors', \App\Livewire\Admin\DoctorList::class)->name('doctors.index');
+    Route::get('/doctors/{doctor}/schedule', \App\Livewire\Admin\ScheduleManager::class)->name('doctors.schedule');
 });
 
 // Doctor Routes

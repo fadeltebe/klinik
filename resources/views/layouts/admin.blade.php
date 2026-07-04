@@ -25,7 +25,14 @@
                 <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                 <span>Dashboard</span>
             </a>
-            <!-- More links -->
+            <a href="{{ route('admin.queue.index') }}" class="nav-link {{ request()->routeIs('admin.queue.*') ? 'active' : 'text-gray-500 hover:bg-gray-50' }} flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all mt-1">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Kelola Antrean</span>
+            </a>
+            <a href="{{ route('admin.doctors.index') }}" class="nav-link {{ request()->routeIs('admin.doctors.*') ? 'active' : 'text-gray-500 hover:bg-gray-50' }} flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all mt-1">
+                <i data-lucide="calendar-clock" class="w-5 h-5"></i>
+                <span>Jadwal Dokter</span>
+            </a>
         </nav>
 
         <div class="pt-4 border-t border-gray-100/50 mt-auto">

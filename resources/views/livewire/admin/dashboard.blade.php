@@ -57,9 +57,9 @@
             <a href="{{ route('admin.queue.index') }}" wire:navigate class="px-5 py-2.5 bg-mint text-white hover:bg-mint-dark rounded-xl text-sm font-semibold transition-colors shadow-sm inline-block">
                 Kelola Antrian
             </a>
-            <button class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-sm font-semibold transition-colors shadow-sm">
+            <a href="{{ route('admin.doctors.index') }}" wire:navigate class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-sm font-semibold transition-colors shadow-sm inline-block">
                 Jadwal Dokter
-            </button>
+            </a>
         </div>
     </div>
 </div>
