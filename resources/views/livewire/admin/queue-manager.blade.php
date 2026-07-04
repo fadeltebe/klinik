@@ -77,27 +77,32 @@
     @if($activeTab === 'pending')
     <div class="space-y-4">
         @forelse($pendingAppointments as $appt)
-        <div class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-orange-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
-                <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="user" class="w-6 h-6"></i>
-                </div>
-                <div class="min-w-0">
-                    <h3 class="font-bold text-gray-800 truncate">{{ $appt->patientProfile->full_name }}</h3>
-                    <p class="text-xs text-gray-500 mt-1 truncate">NIK: {{ $appt->patientProfile->nik ?? '-' }}</p>
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
-                        <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Pending</span>
-                        <span class="text-xs text-gray-500">Mendaftar pada: {{ $appt->created_at->format('H:i') }}</span>
+        <div class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-orange-100 p-5">
+            <div class="grid gap-4">
+                <div class="grid grid-cols-[auto_1fr_auto] gap-4 items-start">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-gray-800 truncate">{{ $appt->patientProfile->full_name }}</h3>
+                        <p class="text-xs text-gray-500 mt-1 truncate">NIK: {{ $appt->patientProfile->nik ?? '-' }}</p>
+                        <p class="text-xs text-gray-500 mt-2">Mendaftar pada: {{ $appt->created_at->format('H:i') }}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-orange-700">Pending</span>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <button wire:click="reject({{ $appt->id }})" class="w-full sm:w-auto px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="x" class="w-4 h-4 text-red-500"></i> Tolak
-                </button>
-                <button wire:click="approve({{ $appt->id }})" class="w-full sm:w-auto px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <i data-lucide="check" class="w-4 h-4 text-base"></i> Setujui
-                </button>
+
+                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <button wire:click="reject({{ $appt->id }})" class="w-full px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        <i data-lucide="x" class="w-4 h-4 text-red-500"></i>
+                        Tolak
+                    </button>
+                    <button wire:click="approve({{ $appt->id }})" class="w-full px-4 py-3 bg-mint hover:bg-mint-dark text-white rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        Setujui
+                    </button>
+                </div>
             </div>
         </div>
         @empty
