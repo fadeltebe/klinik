@@ -1,24 +1,34 @@
 <div>
-    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="mb-6 space-y-4">
         <div>
             <h1 class="text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
             <p class="text-sm text-gray-500">Kelola persetujuan dan alur antrean pasien</p>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div class="flex items-center gap-3">
-                <label for="filterDate" class="text-sm font-semibold text-gray-700">Tanggal:</label>
-                <input type="date" wire:model.live="filterDate" id="filterDate" class="rounded-xl border-gray-200 bg-white shadow-sm focus:border-mint focus:ring focus:ring-mint focus:ring-opacity-50 text-sm">
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
+                <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-mint/10 text-mint">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <label for="filterDate" class="sr-only">Tanggal</label>
+                    <input type="date" wire:model.live="filterDate" id="filterDate" class="w-full rounded-2xl border border-transparent bg-transparent text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0">
+                </div>
             </div>
 
             @if($isGlobalAdmin)
-            <div class="flex items-center gap-3">
-                <label for="doctorSelect" class="text-sm font-semibold text-gray-700">Dokter:</label>
-                <select wire:model.live="selectedDoctorId" id="doctorSelect" class="rounded-xl border-gray-200 bg-white shadow-sm focus:border-mint focus:ring focus:ring-mint focus:ring-opacity-50 text-sm">
-                    @foreach($doctors as $doc)
-                    <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
-                    @endforeach
-                </select>
+            <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
+                <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-mint/10 text-mint">
+                    <i data-lucide="user-check" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <label for="doctorSelect" class="sr-only">Dokter</label>
+                    <select wire:model.live="selectedDoctorId" id="doctorSelect" class="w-full rounded-2xl border border-transparent bg-transparent text-sm text-gray-700 focus:border-mint focus:outline-none focus:ring-0">
+                        @foreach($doctors as $doc)
+                        <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $doc->polyclinic->name ?? '-' }})</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             @endif
         </div>
@@ -32,28 +42,30 @@
     @endif
 
     <!-- Tabs -->
-    <div class="flex gap-2 mb-6 border-b border-gray-200 pb-2 overflow-x-auto">
-        <button wire:click="setTab('pending')" class="px-5 py-2.5 rounded-t-xl text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-            <i data-lucide="clock" class="w-4 h-4"></i>
-            Menunggu Persetujuan
-            @if(count($pendingAppointments) > 0)
-            <span class="{{ $activeTab === 'pending' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($pendingAppointments) }}</span>
-            @endif
-        </button>
-        <button wire:click="setTab('active')" class="px-5 py-2.5 rounded-t-xl text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-            <i data-lucide="users" class="w-4 h-4"></i>
-            Antrean Aktif
-            @if(count($activeAppointments) > 0)
-            <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
-            @endif
-        </button>
-        <button wire:click="setTab('completed')" class="px-5 py-2.5 rounded-t-xl text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-            <i data-lucide="check-square" class="w-4 h-4"></i>
-            Selesai
-            @if(count($completedAppointments) > 0)
-            <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
-            @endif
-        </button>
+    <div class="mb-6 overflow-x-auto scroll-smooth">
+        <div class="inline-flex gap-2 rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
+            <button wire:click="setTab('pending')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'pending' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+                Menunggu
+                @if(count($pendingAppointments) > 0)
+                <span class="{{ $activeTab === 'pending' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($pendingAppointments) }}</span>
+                @endif
+            </button>
+            <button wire:click="setTab('active')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'active' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                Aktif
+                @if(count($activeAppointments) > 0)
+                <span class="{{ $activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-orange-500 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($activeAppointments) }}</span>
+                @endif
+            </button>
+            <button wire:click="setTab('completed')" class="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-semibold transition-colors flex items-center gap-2 {{ $activeTab === 'completed' ? 'bg-mint text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i data-lucide="check-square" class="w-4 h-4"></i>
+                Selesai
+                @if(count($completedAppointments) > 0)
+                <span class="{{ $activeTab === 'completed' ? 'bg-white/20 text-white' : 'bg-gray-400 text-white' }} text-[10px] px-2 py-0.5 rounded-full">{{ count($completedAppointments) }}</span>
+                @endif
+            </button>
+        </div>
     </div>
 
     @if(!$selectedDoctorId)
@@ -65,25 +77,25 @@
     @if($activeTab === 'pending')
     <div class="space-y-4">
         @forelse($pendingAppointments as $appt)
-        <div class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-orange-100 p-5 flex items-center justify-between gap-4">
-            <div class="flex-1 flex items-start gap-4">
+        <div class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-orange-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <i data-lucide="user" class="w-6 h-6"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-800">{{ $appt->patientProfile->full_name }}</h3>
-                    <p class="text-xs text-gray-500 mt-1">NIK: {{ $appt->patientProfile->nik ?? '-' }}</p>
-                    <div class="flex items-center gap-2 mt-2">
+                <div class="min-w-0">
+                    <h3 class="font-bold text-gray-800 truncate">{{ $appt->patientProfile->full_name }}</h3>
+                    <p class="text-xs text-gray-500 mt-1 truncate">NIK: {{ $appt->patientProfile->nik ?? '-' }}</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
                         <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Pending</span>
                         <span class="text-xs text-gray-500">Mendaftar pada: {{ $appt->created_at->format('H:i') }}</span>
                     </div>
                 </div>
             </div>
-            <div class="flex gap-2 flex-shrink-0 items-center">
-                <button wire:click="reject({{ $appt->id }})" class="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 shadow-sm">
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <button wire:click="reject({{ $appt->id }})" class="w-full sm:w-auto px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="x" class="w-4 h-4 text-red-500"></i> Tolak
                 </button>
-                <button wire:click="approve({{ $appt->id }})" class="px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-sm font-semibold transition-colors flex items-center gap-2 shadow-sm">
+                <button wire:click="approve({{ $appt->id }})" class="w-full sm:w-auto px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="check" class="w-4 h-4 text-base"></i> Setujui
                 </button>
             </div>
@@ -120,36 +132,36 @@
         $label = $statusLabels[$appt->status] ?? ucfirst($appt->status);
         @endphp
 
-        <div data-id="{{ $appt->id }}" class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center justify-between gap-4 {{ $appt->status === 'calling' ? 'ring-2 ring-purple-300' : '' }}">
-            <div class="flex-1 flex items-center gap-5">
+        <div data-id="{{ $appt->id }}" class="canva-card bg-white/80 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between {{ $appt->status === 'calling' ? 'ring-2 ring-purple-300' : '' }}">
+            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-5">
                 <i data-lucide="grip-vertical" class="w-5 h-5 text-gray-300 cursor-grab hover:text-gray-500 drag-handle flex-shrink-0"></i>
-                <div class="text-center w-14">
+                <div class="text-center sm:text-left w-full sm:w-14">
                     <span class="block text-[10px] text-gray-400 font-bold uppercase">Antrean</span>
                     <span class="block text-3xl font-bold text-mint-dark">{{ $appt->queue_number }}</span>
                 </div>
-                <div class="h-10 w-px bg-gray-200"></div>
-                <div>
-                    <h3 class="font-bold text-gray-800">{{ $appt->patientProfile->full_name }}</h3>
-                    <div class="flex items-center gap-2 mt-1.5">
+                <div class="hidden sm:block h-10 w-px bg-gray-200"></div>
+                <div class="min-w-0">
+                    <h3 class="font-bold text-gray-800 truncate">{{ $appt->patientProfile->full_name }}</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1.5">
                         <span class="{{ $colorClass }} text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">{{ $label }}</span>
                     </div>
                 </div>
             </div>
-            <div class="flex gap-2 flex-shrink-0 items-center">
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center w-full sm:w-auto">
                 @if($appt->status === 'approved')
-                <button wire:click="updateStatus({{ $appt->id }}, 'checked_in')" class="px-4 py-2 border border-blue-200 text-blue-600 hover:bg-blue-50 rounded-xl text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm">
+                <button wire:click="updateStatus({{ $appt->id }}, 'checked_in')" class="w-full sm:w-auto px-4 py-2 border border-blue-200 text-blue-600 hover:bg-blue-50 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="user-check" class="w-4 h-4"></i> Pasien Hadir
                 </button>
                 @elseif($appt->status === 'checked_in')
-                <button wire:click="updateStatus({{ $appt->id }}, 'calling')" class="px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-xl text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm">
+                <button wire:click="updateStatus({{ $appt->id }}, 'calling')" class="w-full sm:w-auto px-4 py-2 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="mic" class="w-4 h-4"></i> Panggil
                 </button>
                 @elseif($appt->status === 'calling')
-                <button wire:click="updateStatus({{ $appt->id }}, 'processing')" class="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm">
+                <button wire:click="updateStatus({{ $appt->id }}, 'processing')" class="w-full sm:w-auto px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="door-open" class="w-4 h-4"></i> Masuk Ruangan
                 </button>
                 @elseif($appt->status === 'processing')
-                <button wire:click="updateStatus({{ $appt->id }}, 'completed')" class="px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm" title="Biasanya dilakukan oleh Dokter">
+                <button wire:click="updateStatus({{ $appt->id }}, 'completed')" class="w-full sm:w-auto px-4 py-2 bg-mint hover:bg-mint-dark text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm" title="Biasanya dilakukan oleh Dokter">
                     <i data-lucide="check-check" class="w-4 h-4"></i> Selesai
                 </button>
                 @endif
@@ -170,20 +182,20 @@
     @if($activeTab === 'completed')
     <div class="space-y-4">
         @forelse($completedAppointments as $appt)
-        <div class="canva-card bg-white/60 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center justify-between gap-4">
-            <div class="flex-1 flex items-center gap-5 opacity-75">
-                <div class="text-center w-14">
+        <div class="canva-card bg-white/60 backdrop-blur rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-5 opacity-75 min-w-0">
+                <div class="text-center sm:text-left w-full sm:w-14">
                     <span class="block text-[10px] text-gray-400 font-bold uppercase">Antrean</span>
                     <span class="block text-3xl font-bold text-gray-400">{{ $appt->queue_number }}</span>
                 </div>
-                <div class="h-10 w-px bg-gray-200"></div>
-                <div>
-                    <h3 class="font-bold text-gray-600">{{ $appt->patientProfile->full_name }}</h3>
-                    <div class="flex items-center gap-2 mt-1.5">
+                <div class="hidden sm:block h-10 w-px bg-gray-200"></div>
+                <div class="min-w-0">
+                    <h3 class="font-bold text-gray-600 truncate">{{ $appt->patientProfile->full_name }}</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 mt-1.5">
                         @if($appt->status === 'completed')
-                            <span class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Selesai Diperiksa</span>
+                        <span class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Selesai Diperiksa</span>
                         @elseif($appt->status === 'cancelled')
-                            <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Dibatalkan</span>
+                        <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">Dibatalkan</span>
                         @endif
                         <span class="text-xs text-gray-400">Jam: {{ $appt->updated_at->format('H:i') }}</span>
                     </div>
@@ -207,9 +219,9 @@
 <script>
     function initSortable() {
         let el = document.getElementById('sortable-queue');
-        if(el) {
+        if (el) {
             // Destroy previous instance if exists
-            if(el.sortable) {
+            if (el.sortable) {
                 el.sortable.destroy();
             }
             el.sortable = Sortable.create(el, {
@@ -223,7 +235,7 @@
             });
         }
     }
-    
+
     initSortable();
 
     Livewire.hook('commit', ({ succeed }) => {
