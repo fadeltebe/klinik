@@ -50,16 +50,4 @@
         </div>
     </div>
 
-    <!-- Aksi Cepat -->
-    <div class="canva-card rounded-2xl p-6 border border-white/60 shadow-sm bg-white/80 backdrop-blur">
-        <h2 class="font-bold text-lg mb-4 text-gray-800">Aksi Cepat</h2>
-        <div class="flex gap-4">
-            <a href="{{ route('admin.queue.index') }}" wire:navigate class="px-5 py-2.5 bg-mint text-white hover:bg-mint-dark rounded-xl text-sm font-semibold transition-colors shadow-sm inline-block">
-                Kelola Antrian
-            </a>
-            <a href="{{ route('admin.doctors.index') }}" wire:navigate class="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-sm font-semibold transition-colors shadow-sm inline-block">
-                Jadwal Dokter
-            </a>
-        </div>
-    </div>
 </div>

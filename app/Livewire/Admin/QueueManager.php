@@ -16,7 +16,7 @@ class QueueManager extends Component
     public $doctors = [];
     public $isGlobalAdmin = false;
     public $filterDate;
-    
+
     // UI state
     public $activeTab = 'pending'; // 'pending', 'active', or 'completed'
 
@@ -84,11 +84,16 @@ class QueueManager extends Component
         ];
 
         $appointment = Appointment::find($appointmentId);
-        
+
         if ($appointment && isset($allowedTransitions[$appointment->status]) && $allowedTransitions[$appointment->status] === $newStatus) {
             $appointment->update(['status' => $newStatus]);
             session()->flash('success', "Status antrean berhasil diperbarui.");
         }
+    }
+
+    public function refreshQueue()
+    {
+        // Method called by wire:poll to refresh the queue automatically.
     }
 
     // Reorder Queue
@@ -100,7 +105,7 @@ class QueueManager extends Component
         } catch (\Exception $e) {
             $today = Carbon::today();
         }
-        
+
         // Ensure all IDs belong to the current selected doctor and are active for today
         $appointments = Appointment::where('doctor_id', $this->selectedDoctorId)
             ->whereDate('appointment_date', $today)

@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.10s="refreshQueue" class="space-y-6">
     <div class="mb-6 space-y-4">
         <div>
             <h1 class="text-2xl font-bold text-mint-dark">Manajemen Antrean</h1>
@@ -93,14 +93,14 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <button wire:click="reject({{ $appt->id }})" class="w-full px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                <div class="flex gap-2">
+                    <button wire:click="reject({{ $appt->id }})" class="flex-1 px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                         <i data-lucide="x" class="w-4 h-4 text-red-500"></i>
                         Tolak
                     </button>
-                    <button wire:click="approve({{ $appt->id }})" class="w-full px-4 py-3 bg-mint hover:bg-mint-dark text-white rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <button wire:click="approve({{ $appt->id }})" class="flex-1 px-4 py-3 bg-mint hover:bg-mint-dark text-white rounded-2xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
                         <i data-lucide="check" class="w-4 h-4"></i>
-                        Setujui
+                        Terima
                     </button>
                 </div>
             </div>

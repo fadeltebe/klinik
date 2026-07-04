@@ -89,7 +89,14 @@
                 <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
                 <span class="text-[10px] font-medium">Dashboard</span>
             </a>
-            <!-- Additional mobile nav items here -->
+            <a href="{{ route('admin.queue.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.queue.*') ? 'text-mint-dark' : 'text-gray-400' }}">
+                <i data-lucide="users" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium">Antrean</span>
+            </a>
+            <a href="{{ route('admin.doctors.index') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('admin.doctors.*') ? 'text-mint-dark' : 'text-gray-400' }}">
+                <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                <span class="text-[10px] font-medium">Dokter</span>
+            </a>
         </div>
     </nav>
 
