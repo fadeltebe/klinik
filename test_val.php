@@ -1,0 +1,1 @@
+<?php require __DIR__.'/vendor/autoload.php'; \ = require_once __DIR__.'/bootstrap/app.php'; \->make('Illuminate\Contracts\Console\Kernel')->bootstrap(); \ = Illuminate\Support\Facades\Validator::make(['appointmentDate' => '2026-07-05'], ['appointmentDate' => 'required|date']); var_dump(\->passes());

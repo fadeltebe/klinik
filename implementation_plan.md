@@ -785,58 +785,348 @@ klinik/
 
 ## 13. Fase Pengembangan
 
-### Phase 1 — Core Engine (CURRENT SCOPE) 🎯
+### Phase 1 — Core Engine 🟡 IN PROGRESS (~65% Complete)
 
-| # | Modul | Prioritas | Estimasi | Status |
-|---|-------|-----------|----------|--------|
-| 1 | Setup project, database migrations, seeders (Poli, Rekam Medis, Obat) | P0 | 1 hari | ✅ Selesai |
-| 2 | Autentikasi (Login/Logout) + Middleware + Base Dashboards | P0 | 1 hari | ✅ Selesai |
-| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ✅ Selesai |
-| 4 | Patient: Booking wizard | P0 | 1-2 hari | ✅ Selesai |
-| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ✅ Selesai |
-| 6 | Admin: Doctor schedule config | P0 | 0.5 hari | ✅ Selesai |
-| 7 | TV Queue Display | P0 | 1 hari | ✅ Selesai |
-| 8 | Doctor & Apotek: Basic dashboard | P1 | 0.5 hari | ✅ Selesai |
-| 9 | Polish UI, testing, bug fixes | P0 | 1-2 hari | ⬜ Belum |
+**Update Status (2026-07-05 10:17 WIB)**: Core infrastructure (DB, Models, Seeders) 100% selesai. Livewire components ~75% done (14 components, beberapa masih stub). Blade layouts 4/6 dibuat (doctor & tv belum ada). Services/Enums layer belum dibuat. Testing & polish belum dimulai.
 
-**Estimasi Total Phase 1: 7-10 hari kerja**
+| # | Modul | Prioritas | Estimasi | Status | Catatan |
+|---|-------|-----------|----------|--------|---------|
+| 1 | Setup project, database migrations, seeders (Poli, Rekam Medis, Obat) | P0 | 1 hari | ✅ **Selesai** | 12 tables, 15 migrations, 7 seeders |
+| 2 | Autentikasi (Login/Logout) + Middleware + Base Dashboards | P0 | 1 hari | ✅ **Selesai** | LoginForm, RegisterForm, CheckRole middleware |
+| 3 | Patient: Profile CRUD + Netflix picker | P0 | 1 hari | ✅ **Selesai** | ProfilePicker, ProfileForm + views |
+| 4 | Patient: Booking wizard (multi-step) | P0 | 1-2 hari | ✅ **Selesai** | BookAppointment component (7.8KB) + view (18KB) |
+| 5 | Admin: Queue management + Approve logic | P0 | 1-2 hari | ✅ **Selesai** | QueueManager (5.8KB) + view (15.6KB), auto queue calc |
+| 6 | Admin: Doctor schedule config + services | P0 | 0.5 hari | ✅ **Selesai** | ScheduleManager + DoctorServiceManager components |
+| 7 | TV Queue Display | P0 | 1 hari | ✅ **Selesai** | QueueDisplay component (2.5KB) + view (9.3KB), polling 3s |
+| 8 | Doctor Dashboard | P1 | 0.5 hari | 🟡 **20%** | ⚠️ Component STUB saja (252 bytes) — nilai statis, tidak ada logic/data real |
+| 8a | Patient: Appointment History | P1 | 0.5 hari | ❌ **0%** | Component belum ada (tidak ada AppointmentHistory.php) |
+| 8b | Admin: Walk-in booking flow | P1 | 1 hari | ❌ **0%** | Belum ada UI atau component khusus walk-in |
+| 8c | Doctor: Patient list + medical records | P1 | 1 hari | ❌ **0%** | Model MedicalRecord ada, tapi Doctor/PatientList & MedicalRecordForm belum dibuat |
+| 9 | Blade layouts & components | P0 | 1.5 hari | 🟡 **50%** | 4/6 layouts ada (app✅, admin✅, auth✅, patient✅, ❌doctor, ❌tv). 2 blade components (bottom-nav, admin-nav-item) |
+| 10 | Service/Enum layer | P1 | 0.5 hari | ❌ **0%** | Tidak ada app/Services/ atau app/Enums/ directory |
+| 11 | Tailwind CSS styling & UI polish | P0 | 2-3 hari | 🟡 **40%** | Admin views sudah styled (Tailwind CDN/Vite). Beberapa view sudah polished. |
+| 12 | Testing (unit + integration) | P0 | 2 hari | ❌ **0%** | Belum ada test files |
+| 13 | Bug fixes & optimization | P0 | 1 hari | ❌ **0%** | Belum dimulai |
+
+**Estimasi Total Phase 1: ~7-10 hari kerja** | **Selesai: ~33/51 jam (~65%)** | **Sisa: ~18 jam**
+
+**✅ Key Achievements (Yang Sudah Ada di Codebase):**
+- ✅ 11 Models (User, PatientProfile, Polyclinic, Doctor, DoctorSchedule, DoctorService, DoctorAdmin, Appointment, MedicalRecord, Medicine, Prescription)
+- ✅ 15 migration files (semua tabel termasuk 3 tambahan 2026-07-05)
+- ✅ 7 seeders (Database, Polyclinic, Doctor, Admin, Patient, Schedule, Medicine)
+- ✅ 14 Livewire Components:
+  - Auth: LoginForm, RegisterForm
+  - Patient: Dashboard, ProfilePicker, ProfileForm, BookAppointment
+  - Admin: Dashboard, QueueManager, PatientDatabase, DoctorList, ScheduleManager, DoctorServiceManager
+  - Doctor: Dashboard (⚠️ stub)
+  - TvDisplay: QueueDisplay
+  - Apotek: Dashboard (stub), SuperAdmin: Dashboard (stub)
+- ✅ 14 Blade views sesuai komponen Livewire
+- ✅ 4 Layout files (app, admin, auth, patient)
+- ✅ 2 Blade components (bottom-nav, admin-nav-item)
+- ✅ Routes lengkap (patient, admin, doctor, apotek, super_admin, tv-display)
+- ✅ CheckRole middleware
+- ✅ CreateTestAppointments artisan command
+- ✅ Queue calculation logic (di QueueManager)
+
+**❌ Remaining Critical Tasks (Yang BELUM Ada di Codebase):**
+1. ❌ Patient/AppointmentHistory — component & view belum ada
+2. ❌ Admin walk-in booking — belum ada dedicated flow/UI
+3. ❌ Doctor/PatientList — component & view belum ada
+4. ❌ Doctor/MedicalRecordForm — component & view belum ada
+5. ❌ Doctor Dashboard — perlu rebuild, saat ini cuma stub statis
+6. ❌ `layouts/doctor.blade.php` — layout file belum ada
+7. ❌ `layouts/tv.blade.php` — layout file belum ada (QueueDisplay pakai layouts.app)
+8. ❌ app/Services/ (QueueService, BookingService) — belum dibuat
+9. ❌ app/Enums/AppointmentStatus.php — belum dibuat
+10. ❌ Reusable components (status-badge, profile-avatar, side-nav, form-input, modal) — sebagian besar belum
+11. ❌ Unit/Feature tests — belum ada
+12. ❌ Performance optimization — belum dimulai
 
 ### Phase 2 — Enhancements (Future)
-- Booking untuk hari depan (advance booking)
-- Notifikasi WhatsApp / SMS saat dipanggil
-- Rekam medis (SOAP notes) oleh dokter
-- Dashboard analytics & reporting
-- Multi-branch klinik
-- Payment integration
+- Booking untuk hari depan (advance booking) → 3 hari
+- Notifikasi WhatsApp / SMS saat dipanggil → 2 hari
+- Rekam medis (SOAP notes) oleh dokter → 2 hari
+- Dashboard analytics & reporting → 3 hari
+- Multi-branch klinik support → 4 hari
+- Payment integration → 3 hari
+- **Estimasi Phase 2: 17 hari**
 
 ### Phase 3 — Scale (Future)
-- Mobile app (React Native / Flutter wrapper)
-- WebSocket real-time (Pusher/Soketi)
-- Telemedicine / video call
-- Pharmacy & prescription management
-- Insurance integration
+- Mobile app (React Native / Flutter wrapper) → 10 hari
+- WebSocket real-time (Pusher/Soketi) → 3 hari
+- Telemedicine / video call → 5 hari
+- Pharmacy & prescription management → 4 hari
+- Insurance integration → 4 hari
+- **Estimasi Phase 3: 26 hari**
+
+**Timeline Keseluruhan:**
+- Phase 1: 7-10 hari (CURRENT)
+- Phase 2: 17 hari (Q3 2026)
+- Phase 3: 26 hari (Q4 2026)
+- **Total: ~50-53 hari kerja (~10 minggu)**
 
 ---
 
 ## 14. Rencana Verifikasi
 
-### 14.1 Automated Tests
+## 14. Rencana Verifikasi
+
+### 14.1 Pre-Testing Setup ✅ READY
+
 ```bash
-php artisan test                    # Run all tests
-php artisan test --filter=Booking   # Test booking flow
-php artisan test --filter=Queue     # Test queue calculation
+# 1. Navigate to project
+cd c:\laragon\www\klinik
+
+# 2. Run migrations & seeders
+php artisan migrate --fresh
+php artisan db:seed
+
+# 3. Create test appointments
+php artisan appointments:create-test 15
+
+# 4. Start dev server
+php artisan serve
+
+# 5. Test credentials
+# Patient: ratna@email.com / password
+# Admin: admin@klinik.com / password
+# Doctor: Will be seeded
 ```
 
-### 14.2 Manual Testing Checklist
-- [ ] Register akun baru → Login → Buat profil keluarga
-- [ ] Booking appointment untuk profil anak
-- [ ] Admin approve → cek queue number & estimated time benar
-- [ ] Admin check-in → calling → processing → completed
-- [ ] TV Display menampilkan nomor aktif dan update tiap 3 detik
-- [ ] Coba booking melebihi kuota → harus ditolak
-- [ ] Coba booking duplikat (profil + dokter + hari sama) → harus ditolak
-- [ ] Responsive test: iPhone SE, iPad, Desktop
-- [ ] Admin scope: admin spesifik tidak bisa akses dokter lain
+### 14.2 Automated Tests ⬜ TODO
+
+```bash
+# Run test suite
+php artisan test
+
+# Run specific test
+php artisan test --filter=Booking
+php artisan test --filter=Queue
+```
+
+### 14.3 Manual Testing Checklist — Core Features ⬜ TODO
+
+#### Authentication Flow
+- [ ] Register new patient account
+- [ ] Verify email validation (format & uniqueness)
+- [ ] Verify phone validation (format: 08xxxxxxxxxx, uniqueness)
+- [ ] Verify password confirmation
+- [ ] Login with email
+- [ ] Login with phone number
+- [ ] Logout functionality
+- [ ] Role-based redirect (patient → /patient/dashboard, admin → /admin/dashboard)
+
+#### Patient Module
+- [ ] **Profile Management**
+  - [ ] Create first profile on registration
+  - [ ] View all family profiles in Netflix-style picker
+  - [ ] Add new family profile with all fields
+  - [ ] Edit existing profile
+  - [ ] Delete profile (success & validation - cannot delete if appointments exist)
+  - [ ] Set active profile via session
+  - [ ] Verify NIK uniqueness & format (16 digits)
+
+- [ ] **Dashboard**
+  - [ ] View active profile with avatar
+  - [ ] Display active appointment status (if any)
+  - [ ] Quick action button to book appointment
+  - [ ] View clinic info
+
+- [ ] **Booking Wizard (5-Step Flow)**
+  - [ ] Step 1: Profile selection (auto-select if only 1 profile)
+  - [ ] Step 2: Polyclinic/Specialization selection
+    - [ ] Only show active polyclinics with doctors available today
+    - [ ] Display polyclinic names & icons
+  - [ ] Step 3: Doctor selection
+    - [ ] Show available doctors for selected polyclinic
+    - [ ] Display remaining quota (if full, show "Kuota Penuh" badge)
+    - [ ] Disable booking if quota full
+  - [ ] Step 4: Service selection (if multiple services available)
+  - [ ] Step 5: Complaint/notes input & confirmation
+    - [ ] Display summary with profile, doctor, date
+    - [ ] Submit & verify status = "pending"
+  - [ ] Validation: Cannot book same doctor twice on same day
+  - [ ] Validation: Cannot exceed doctor quota
+  - [ ] Confirmation message on successful booking
+
+- [ ] **Appointment History** (⬜ Not yet implemented)
+  - [ ] View all appointments for all family profiles
+  - [ ] Filter by profile, status, date
+  - [ ] Pagination
+  - [ ] Display status with color badges
+  - [ ] Display queue number when approved
+
+#### Admin Module
+- [ ] **Dashboard**
+  - [ ] View summary cards (pending, approved, completed today)
+  - [ ] Display total patients for today
+  - [ ] Doctor filter dropdown
+
+- [ ] **Queue Management**
+  - [ ] View appointments by tab (pending, approved, checked-in, calling, processing, completed)
+  - [ ] **Pending Tab**: Display pending appointments
+    - [ ] Approve action: Auto-calculate queue_number + estimated_time
+    - [ ] Verify queue calculation logic: queue_number = max(previous) + 1
+    - [ ] Verify estimated time: start_time + (queue_number - 1) × interval
+    - [ ] Reject action: Change status to cancelled
+  - [ ] **Approved Tab**: Display approved appointments
+    - [ ] Check-in action: Change to checked_in status
+    - [ ] Cancel action: Change to cancelled
+  - [ ] **Checked-in Tab**: Display checked-in appointments
+    - [ ] Call action: Change to calling status
+  - [ ] **Calling Tab**: Display calling appointments
+    - [ ] Start processing action: Change to processing
+    - [ ] Call again action: Keep in calling
+  - [ ] **Processing Tab**: Display in-process appointments
+    - [ ] Complete action: Change to completed
+  - [ ] **Completed Tab**: Display final appointments
+  - [ ] Filter by date & doctor
+  - [ ] Verify status flow is correct
+
+- [ ] **Doctor Schedule Configuration** (🟡 Partially done - need UI)
+  - [ ] View doctor's schedule
+  - [ ] Edit schedule (time, quota, interval)
+  - [ ] Validation: end_time > start_time
+  - [ ] Validation: quota × interval <= duration
+  - [ ] Toggle schedule active/inactive
+  - [ ] No duplicate schedules for same doctor + date
+
+- [ ] **Doctor Service Management** (🟡 Partially done - need UI)
+  - [ ] View doctor's services
+  - [ ] Add new service (name, description, duration, price)
+  - [ ] Edit service
+  - [ ] Delete service
+  - [ ] Toggle service active/inactive
+
+- [ ] **Patient Database** (🟡 Partially done - need UI)
+  - [ ] Search patient by NIK
+  - [ ] Search patient by name
+  - [ ] Search patient by phone
+  - [ ] View patient's appointment history
+  - [ ] Quick walk-in booking option
+
+- [ ] **Walk-in Booking Flow** (⬜ Not yet implemented)
+  - [ ] Search for existing patient
+  - [ ] Create new walk-in patient if not found
+  - [ ] Auto-create user account with is_walk_in = true
+  - [ ] Direct approve (skip pending status)
+  - [ ] Auto-calculate queue number
+
+#### Doctor Module
+- [ ] **Dashboard**
+  - [ ] View today's summary (total, completed, remaining)
+  - [ ] View list of patients for today
+  - [ ] Display current/calling patient info
+  - [ ] Verify sorting by queue number
+
+- [ ] **Patient List & Medical Records** (⬜ Not yet implemented)
+  - [ ] View full queue with status
+  - [ ] Filter by status
+  - [ ] Call next button (change to calling)
+  - [ ] Start processing button (change to processing)
+  - [ ] Complete button (change to completed)
+  - [ ] View patient profile & medical history
+  - [ ] Add SOAP notes (Subjective, Objective, Assessment, Plan)
+  - [ ] Create/recommend prescription
+
+#### TV Display Module
+- [ ] **Real-time Display**
+  - [ ] Access /tv-display without login ✅
+  - [ ] Display active appointment (large number) ✅
+  - [ ] Display next 5-10 appointments ✅
+  - [ ] Auto-refresh every 3 seconds (verify via Livewire polling) ✅
+  - [ ] Update immediately when status changes ✅
+  - [ ] Doctor filtering (via ?doctor_id=1) ✅
+  - [ ] Display patient name & doctor name ✅
+  - [ ] Show appropriate status colors
+
+### 14.4 UI/UX Testing ⬜ TODO
+
+#### Responsive Design
+- [ ] **Mobile (iPhone SE - 375x667)**
+  - [ ] Bottom navigation visible
+  - [ ] Content readable (no horizontal scroll)
+  - [ ] Buttons & inputs proper size (44px touch target)
+  - [ ] Forms single column
+  - [ ] Images scaled appropriately
+
+- [ ] **Tablet (iPad - 1024x768)**
+  - [ ] Side or mixed navigation
+  - [ ] Content properly laid out
+  - [ ] Proper spacing
+
+- [ ] **Desktop (1920x1080)**
+  - [ ] Full layout with sidebars
+  - [ ] Proper use of screen space
+  - [ ] No excessive whitespace
+
+#### Accessibility
+- [ ] Color contrast meets WCAG AA (4.5:1 for text)
+- [ ] Touch targets minimum 44×44px
+- [ ] Form labels & placeholders present
+- [ ] Focus states clearly visible
+- [ ] Keyboard navigation works
+
+#### Visual Consistency
+- [ ] Color palette applied (Mint, Orange, Gold, etc.)
+- [ ] Typography consistent (Inter font)
+- [ ] Spacing consistent (8px grid)
+- [ ] Icons consistent style
+- [ ] Status badges color-coded
+
+### 14.5 Performance Testing ⬜ TODO
+
+- [ ] Page load time < 2 seconds (3G network)
+- [ ] Livewire polling response < 50ms
+- [ ] No N+1 database queries
+- [ ] Database indexes present
+- [ ] Lazy loading for images
+- [ ] Caching for static content
+
+### 14.6 Integration Testing ⬜ TODO
+
+#### End-to-End Workflows
+- [ ] **Complete Patient Booking → Admin Approval → Doctor Processing**
+  1. Patient registers & creates profile
+  2. Patient books appointment (verify status = pending)
+  3. Admin reviews pending appointment
+  4. Admin approves (verify queue_number & estimated_time calculated)
+  5. Admin check-in patient
+  6. Admin calls patient (status = calling)
+  7. Doctor starts processing (status = processing)
+  8. Doctor completes (status = completed)
+  9. TV Display shows correct queue throughout
+  10. Patient history shows completed appointment
+
+- [ ] **Quota & Booking Validation**
+  1. Create doctor schedule with quota = 3
+  2. Book 3 patients (all should succeed)
+  3. Try to book 4th patient (should be rejected - quota full)
+  4. Admin approves all 3 → queue numbers should be 1, 2, 3
+  5. Estimated times should be: start + 0×15min, start + 1×15min, start + 2×15min
+
+- [ ] **Admin Scope & Doctor Assignment**
+  1. Global admin can see/manage all doctors
+  2. Restricted admin can only see assigned doctor(s)
+  3. Restricted admin cannot see other doctors' appointments
+
+- [ ] **Walk-in Booking** (⬜ When implemented)
+  1. Admin creates new walk-in patient
+  2. User account auto-created with is_walk_in = true
+  3. Appointment auto-approved
+  4. Patient can later claim account via registration with same NIK
+
+### 14.7 Security Testing ⬜ TODO
+
+- [ ] CSRF tokens present on all forms
+- [ ] Role-based middleware enforced
+  - [ ] Patient cannot access /admin/queue
+  - [ ] Admin cannot access /patient/book-appointment as different user
+  - [ ] Doctor cannot modify appointments (read-only except status updates)
+- [ ] Password not visible in network requests
+- [ ] Session validation works
+- [ ] Logout properly clears session
 
 ---
 

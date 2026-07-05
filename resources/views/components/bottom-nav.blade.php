@@ -5,7 +5,7 @@
             <span class="text-[10px] font-medium">Beranda</span>
         </a>
 
-        <a href="#" class="mob-nav flex flex-col items-center gap-1 text-gray-400">
+        <a href="{{ route('patient.history') }}" class="mob-nav flex flex-col items-center gap-1 {{ request()->routeIs('patient.history') ? 'text-mint-dark' : 'text-gray-400' }}">
             <i data-lucide="list-checks" class="w-6 h-6"></i>
             <span class="text-[10px] font-medium">Riwayat</span>
         </a>

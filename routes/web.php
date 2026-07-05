@@ -34,6 +34,7 @@ Route::middleware(['auth', 'role:patient'])->prefix('patient')->name('patient.')
     Route::get('/profiles/create', \App\Livewire\Patient\ProfileForm::class)->name('profiles.create');
     Route::get('/profiles/{profile}/edit', \App\Livewire\Patient\ProfileForm::class)->name('profiles.edit');
     Route::get('/book-appointment', \App\Livewire\Patient\BookAppointment::class)->name('book-appointment');
+    Route::get('/history', \App\Livewire\Patient\AppointmentHistory::class)->name('history');
 });
 
 // Super Admin Routes
@@ -48,6 +49,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/patients', \App\Livewire\Admin\PatientDatabase::class)->name('patients.index');
     Route::get('/doctors', \App\Livewire\Admin\DoctorList::class)->name('doctors.index');
     Route::get('/doctors/{doctor}/schedule', \App\Livewire\Admin\ScheduleManager::class)->name('doctors.schedule');
+    Route::get('/doctors/{doctor}/services', \App\Livewire\Admin\DoctorServiceManager::class)->name('doctors.services');
 });
 
 // Doctor Routes
